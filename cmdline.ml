@@ -49,7 +49,7 @@ let base_addr = ref "0x10000"
 
 let usage_msg =
   Printf.sprintf
-    "FlexDLL version %s\n\nUsage:\n  flexlink -o <result.dll/exe> file1.obj file2.obj ... -- <extra linker arguments>\n"
+    "[ESY FORK] FlexDLL version %s\n\nUsage:\n  flexlink -o <result.dll/exe> file1.obj file2.obj ... -- <extra linker arguments>\n"
     Version.version
 
 let footer =
