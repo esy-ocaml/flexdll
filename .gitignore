@@ -13,3 +13,7 @@ version.ml
 Makefile.winsdk
 COMPILER-*
 Compat.ml
+
+esy.lock.json
+node_modules/
+_esy/

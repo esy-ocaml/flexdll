@@ -1,0 +1,17 @@
+{
+  "name": "flexdll",
+  "version": "0.1.0",
+  "description": "flexdll",
+  "license": "MIT",
+  "esy": {
+    "build": [
+        ["make", "flexlink.exe"],
+        ["ls", "-a", "#{self.root}"],
+        ["cp", "#{self.root}/flexlink.exe", "/cygdrive/e/flexlink.exe"]
+    ],
+    "buildsInSource": true
+  },
+  "dependencies": {
+    "ocaml": "~4.6.0"
+  }
+}
