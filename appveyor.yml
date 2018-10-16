@@ -21,7 +21,7 @@ install:
 build_script:
     - esy build
     - node esy/create-release.js
-    - cd $FLEXDLL_RELEASE_FOLDER && npm pack
+    - cd %FLEXDLL_RELEASE_FOLDER% && npm pack
 
 artifacts:
     - path: C:/Users/appveyor/_flexdll_release
