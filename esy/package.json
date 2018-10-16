@@ -1,0 +1,22 @@
+{
+  "name": "flexdll-prebuilt",
+  "version": "0.37.0001",
+  "description": "Prebuilt flexdll/flexlink binaries",
+  "main": "index.js",
+  "esy": {
+    "build": [
+        ["bash", "-c", "{#os == 'windows' ? 'cp ./flexlink.exe $cur__bin/flexlink.exe' : 'true'}"],
+        ["bash", "-c", "{#os == 'windows' ? 'cp ./flexdll_mingw64.o $cur__lib/flexdll_mingw64.o' : 'true'}"],
+        ["bash", "-c", "{#os == 'windows' ? 'cp ./flexdll_initer_mingw64.o $cur__lib/flexdll_initer_mingw64.o' : 'true'}"]
+    ],
+    "buildsInSoucre": "_build",
+    "exportedEnv": {
+        "PATH": {
+            "val": "$cur__lib:$cur__bin:$PATH",
+            "scope": "global"
+        }
+    }
+  },
+  "author": "",
+  "license": "MIT"
+}

@@ -5,9 +5,12 @@
   "license": "MIT",
   "esy": {
     "build": [
-        ["make", "flexlink.exe"]
+        ["echo", "#{self.bin}"],
+        ["make", "flexlink.exe"],
+        ["make", "flexdll_initer_mingw64.o"],
+        ["make", "flexdll_mingw64.o"]
     ],
-    "buildsInSource": true
+    "buildsInSource": "_build"
   },
   "dependencies": {
     "ocaml": "~4.6.0"
