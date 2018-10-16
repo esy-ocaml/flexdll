@@ -22,5 +22,5 @@ if (!fs.existsSync(releaseFolder)) {
 }
 
 filesToBundle.forEach((f) => {
-    fs.copySync(path.join(__dirname, "..", f), path.join(releaseFolder, path.basename(f)));
+    fs.copyFileSync(path.join(__dirname, "..", f), path.join(releaseFolder, path.basename(f)));
 });
