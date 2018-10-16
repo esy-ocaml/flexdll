@@ -7,7 +7,8 @@ environment:
     FLEXDLL_RELEASE_FOLDER: "C:/Users/appveyor/_flexdll_release"
 
 cache:
-  - C:/Users/appveyor/.esy
+  - C:/Users/appveyor/.esy/source-tarballs
+  - C:/Users/appveyor/.esy/3_/i
 
 install:
     # The x64 is required as a workaround for esy/esy#412
@@ -19,6 +20,7 @@ install:
 build_script:
     - esy build
     - node esy/create-release.js
+    - cd $FLEXDLL_RELEASE_FOLDER && npm pack
 
 artifacts:
     - path: C:/Users/appveyor/_flexdll_release
