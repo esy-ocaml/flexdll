@@ -5,11 +5,13 @@
   "main": "index.js",
   "esy": {
     "build": [
-        ["bash", "-c", "{#os == 'windows' ? 'cp ./flexlink.exe $cur__bin/flexlink.exe' : 'true'}"],
-        ["bash", "-c", "{#os == 'windows' ? 'cp ./flexdll_mingw64.o $cur__lib/flexdll_mingw64.o' : 'true'}"],
-        ["bash", "-c", "{#os == 'windows' ? 'cp ./flexdll_initer_mingw64.o $cur__lib/flexdll_initer_mingw64.o' : 'true'}"]
+        ["pwd"],
+        ["bash", "-c", "#{os == 'windows' ? 'cp flexlink.exe $cur__bin/flexlink.exe' : 'true'}"],
+        ["bash", "-c", "#{os == 'windows' ? 'cp flexdll_mingw64.o $cur__lib/flexdll_mingw64.o' : 'true'}"],
+        ["bash", "-c", "#{os == 'windows' ? 'cp flexdll_initer_mingw64.o $cur__lib/flexdll_initer_mingw64.o' : 'true'}"]
+        ["bash", "-c", "#{os == 'windows' ? 'cp flexdll.h $cur__lib/flexdll.h' : 'true'}"]
     ],
-    "buildsInSoucre": "_build",
+    "buildsInSource": "_build",
     "exportedEnv": {
         "PATH": {
             "val": "$cur__lib:$cur__bin:$PATH",
