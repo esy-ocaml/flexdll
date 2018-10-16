@@ -1,0 +1,18 @@
+{
+  "name": "flexdll",
+  "version": "0.37.0001",
+  "description": "flexdll",
+  "license": "MIT",
+  "esy": {
+    "build": [
+        ["echo", "#{self.bin}"],
+        ["make", "flexlink.exe"],
+        ["make", "flexdll_initer_mingw64.o"],
+        ["make", "flexdll_mingw64.o"]
+    ],
+    "buildsInSource": "_build"
+  },
+  "dependencies": {
+    "ocaml": "~4.6.0"
+  }
+}

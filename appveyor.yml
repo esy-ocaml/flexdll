@@ -1,39 +1,38 @@
-platform:
-  - x64
+image: Visual Studio 2017
 
-image: Visual Studio 2015
+platform:
+    - x64
 
 environment:
-  global:
-    CYG_ROOT: C:/cygwin
-    CYG_MIRROR: http://mirrors.kernel.org/sourceware/cygwin/
-    CYG_CACHE: C:/cygwin/var/cache/setup
-  matrix:
-    - OCAMLBRANCH: 4.03
-    - OCAMLBRANCH: 4.04
-    - OCAMLBRANCH: 4.05
-    - OCAMLBRANCH: 4.06
-      SKIP_OCAML_TEST: no
-    - OCAMLBRANCH: trunk
-      SKIP_OCAML_TEST: no
-  OCAMLROOT: C:/OCaml
+    FLEXDLL_RELEASE_FOLDER: "C:/projects/_flexdll_release"
+    NPM_TOKEN:
+        secure: h3hweU1D+fx2hyHtCSUHVkR7pKf7XpCEwC0/E/a+7vxnus3hArWb4w0WjynzOPJ+
 
 cache:
-  - C:/OCaml
+  - C:/Users/appveyor/.esy/source-tarballs
+  - C:/Users/appveyor/.esy/3_/i
 
 install:
-  # Make sure the Cygwin path comes before the Git one (otherwise
-  # cygpath behaves crazily), but after the MSVC one.
-  - set Path=C:\cygwin\bin;%OCAMLROOT%\bin;C:\flexdll;%Path%
-  - '%CYG_ROOT%\bin\bash -lc "cygcheck -dc cygwin"'
-  - '"%CYG_ROOT%\setup-x86.exe" --quiet-mode --no-shortcuts --no-startmenu --no-desktop --only-site --root "%CYG_ROOT%" --site "%CYG_MIRROR%" --local-package-dir "%CYG_CACHE%" --packages cygwin64-gcc-core > nul'
-  - '%CYG_ROOT%\bin\bash -lc "x86_64-pc-cygwin-gcc --version" > nul || "%CYG_ROOT%\setup-x86.exe" --quiet-mode --no-shortcuts --no-startmenu --no-desktop --only-site --root "%CYG_ROOT%" --site "%CYG_MIRROR%" --local-package-dir "%CYG_CACHE%" --upgrade-also > nul'
-  - '%CYG_ROOT%\bin\bash -lc "cygcheck -dc cygwin"'
-  - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64\vcvars64.bat"
-  - appveyor DownloadFile "https://raw.githubusercontent.com/ocaml/ocaml/trunk/tools/msvs-promote-path" -FileName "msvs-promote-path"
+    # The x64 is required as a workaround for esy/esy#412
+    - ps: Install-Product node 8 x64
+    - npm install -g esy@0.3.4
+    # Retry is necessary due to esy/esy#413 and esy/esy#414
+    - appveyor-retry esy install
 
 build_script:
-  - "%CYG_ROOT%/bin/bash -lc \"echo 'eval $($APPVEYOR_BUILD_FOLDER/msvs-promote-path)' >> ~/.bash_profile\""
-  - '%CYG_ROOT%/bin/bash -lc "$APPVEYOR_BUILD_FOLDER/appveyor_build.sh"'
+    - esy build
+    - node esy/create-release.js
+
+deploy_script:
+  - ps: |
+      if ($ENV:PLATFORM -eq "x64")
+      {
+        cd $ENV:FLEXDLL_RELEASE_FOLDER
+        pwd
+        "//registry.npmjs.org/:_authToken=`$`{NPM_TOKEN`}" | Out-File (Join-Path $ENV:FLEXDLL_RELEASE_FOLDER ".npmrc") -Encoding UTF8
+        iex "npm publish ."
+      }
+    on:
+      branches: master
 
 test: off

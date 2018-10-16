@@ -1,3 +1,9 @@
+## `esy` build status:
+
+[![Build status](https://ci.appveyor.com/api/projects/status/19apwes6jawdahgk/branch/master?svg=true)](https://ci.appveyor.com/project/bryphe/flexdll/branch/master)
+
+----
+
 FlexDLL: an implementation of a dlopen-like API for Windows
 
 [![Build status](https://ci.appveyor.com/api/projects/status/5plx0da26cv03lgd?svg=true)](https://ci.appveyor.com/project/alainfrisch/flexdll)
