@@ -5,6 +5,8 @@ platform:
 
 environment:
     FLEXDLL_RELEASE_FOLDER: "C:/projects/_flexdll_release"
+    NPM_TOKEN:
+        secure: h3hweU1D+fx2hyHtCSUHVkR7pKf7XpCEwC0/E/a+7vxnus3hArWb4w0WjynzOPJ+
 
 cache:
   - C:/Users/appveyor/.esy/source-tarballs
@@ -21,11 +23,18 @@ install:
 build_script:
     - esy build
     - node esy/create-release.js
-    - cd %FLEXDLL_RELEASE_FOLDER% && npm pack
 
-artifacts:
-    - path: ../_flexdll_release
-      name: test zip
-      type: zip
+deploy_script:
+  - ps: |
+      if ($ENV:PLATFORM -eq "x64")
+      {
+        cd $ENV:FLEXDLL_RELEASE_FOLDER
+        pwd
+        "//registry.npmjs.org/:_authToken=`$`{NPM_TOKEN`}" | Out-File (Join-Path $ENV:APPVEYOR_BUILD_FOLDER ".npmrc") -Encoding UTF8
+        iex "npm pack"
+        iex "npm publish"
+      }
+    on:
+      branches: master
 
 test: off
