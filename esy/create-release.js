@@ -11,6 +11,7 @@ if (!releaseFolder) {
 
 const filesToBundle = [
     "flexlink.exe",
+    "flexdll.h",
     "flexdll_initer_mingw64.o",
     "flexdll_mingw64.o",
     "esy/package.json",
@@ -24,3 +25,5 @@ if (!fs.existsSync(releaseFolder)) {
 filesToBundle.forEach((f) => {
     fs.copyFileSync(path.join(__dirname, "..", f), path.join(releaseFolder, path.basename(f)));
 });
+
+console.log(`[FlexDLL Packager]: Packaged successfully to ${releaseFolder}.`);
