@@ -3,6 +3,9 @@ image: Visual Studio 2017
 platform:
     - x64
 
+environment:
+    FLEXDLL_RELEASE_FOLDER: "C:/Users/appveyor/_flexdll_release"
+
 cache:
   - C:/Users/appveyor/.esy
 
@@ -15,5 +18,11 @@ install:
 
 build_script:
     - esy build
+    - node esy/create-release.js
+
+artifacts:
+    - path: C:/Users/appveyor/_flexdll_release
+      name: test zip
+      type: zip
 
 test: off
