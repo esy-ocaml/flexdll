@@ -4,7 +4,7 @@ platform:
     - x64
 
 environment:
-    FLEXDLL_RELEASE_FOLDER: "C:/Users/appveyor/_flexdll_release"
+    FLEXDLL_RELEASE_FOLDER: "C:/projects/_flexdll_release"
 
 cache:
   - C:/Users/appveyor/.esy/source-tarballs
@@ -24,7 +24,7 @@ build_script:
     - cd %FLEXDLL_RELEASE_FOLDER% && npm pack
 
 artifacts:
-    - path: C:/Users/appveyor/_flexdll_release
+    - path: ../_flexdll_release
       name: test zip
       type: zip
 
