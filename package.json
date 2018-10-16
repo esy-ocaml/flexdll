@@ -1,0 +1,15 @@
+{
+  "name": "flexdll",
+  "version": "0.1.0",
+  "description": "flexdll",
+  "license": "MIT",
+  "esy": {
+    "build": [
+        ["make", "flexlink.exe"]
+    ],
+    "buildsInSource": true
+  },
+  "dependencies": {
+    "ocaml": "~4.6.0"
+  }
+}
