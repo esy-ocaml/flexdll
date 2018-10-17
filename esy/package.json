@@ -1,6 +1,6 @@
 {
   "name": "flexdll-prebuilt",
-  "version": "0.37.0001",
+  "version": "0.37.0002",
   "description": "Prebuilt flexdll/flexlink binaries",
   "main": "index.js",
   "esy": {
