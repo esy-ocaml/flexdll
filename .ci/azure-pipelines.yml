@@ -9,6 +9,6 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   variables:
-    FLEXDLL_RELEASE_FOLDER: "C:/projects/_flexdll_release"
+    FLEXDLL_RELEASE_FOLDER: "C:/_flexdll_release"
   steps:
   - template: esy-build-steps.yml
