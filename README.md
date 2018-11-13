@@ -1,6 +1,6 @@
 ## `esy` build status:
 
-[![Build status](https://ci.appveyor.com/api/projects/status/19apwes6jawdahgk/branch/master?svg=true)](https://ci.appveyor.com/project/bryphe/flexdll/branch/master)
+[![Build Status](https://dev.azure.com/esy-packages/flexdll/_apis/build/status/esy-ocaml.flexdll)](https://dev.azure.com/esy-packages/flexdll/_build/latest?definitionId=8)
 
 ----
 
