@@ -36,6 +36,10 @@ let ext_obj () =
 
 (* Temporary files *)
 
+let cmd_verbose cmd =
+  if !verbose >= 1 then Printf.printf "+ %s\n" cmd;
+  Sys.command cmd
+
 let temps = ref []
 
 let add_temp fn =
@@ -71,14 +75,14 @@ let get_output ?(use_bash = false) ?(accept_error=false) cmd =
     (* Lower the limit for our shell command to 8191 (max command length) - 260 (max path length) = 7931 *)
     if String.length cmd' < 7931 && not use_bash then
       begin
-        if (Sys.command cmd' <> 0) && not accept_error
+        if (cmd_verbose cmd' <> 0) && not accept_error
         then failwith ("Cannot run " ^ cmd);
       end
     else
       begin
         let (cfn, oc) = open_temp_file "longcmd" ".sh" in
           output_string oc cmd'; close_out oc;
-          if Sys.command (Printf.sprintf "bash %s" cfn) <> 0
+          if cmd_verbose (Printf.sprintf "bash %s" cfn) <> 0
           then failwith ("Cannot run " ^ cmd)
       end;
     let r = read_file fn in
@@ -210,11 +214,11 @@ let run_command cmdline cmd =
     close_out oc;
 
     if !verbose >= 1 then Printf.printf "(call with bash: %s)\n%!" fn;
-    if Sys.command (Printf.sprintf "bash %s" fn) <> 0 then
+    if cmd_verbose (Printf.sprintf "bash %s" fn) <> 0 then
       failwith "Error during linking\n"
   end else
-    if Sys.command cmd_quiet <> 0 then begin
-      if cmd <> cmd_quiet then ignore (Sys.command cmd);
+    if cmd_verbose cmd_quiet <> 0 then begin
+      if cmd <> cmd_quiet then ignore (cmd_verbose cmd);
       failwith "Error during linking\n"
     end
 
@@ -560,11 +564,6 @@ let collect f l =
     (fun accu x -> match f x with None -> accu | Some y -> y :: accu)
     []
     l
-
-let cmd_verbose cmd =
-  if !verbose >= 1 then Printf.printf "+ %s\n" cmd;
-  Sys.command cmd
-
 
 let parse_dll_exports fn =
   let ic = open_in fn in
@@ -1125,7 +1124,7 @@ let build_dll link_exe output_file files exts extra_args =
           (Filename.quote fn)
       in
       if !verbose >= 1 then Printf.printf "+ %s\n%!" mcmd;
-      if Sys.command mcmd <> 0 then
+      if cmd_verbose mcmd <> 0 then
         failwith "Error while merging the manifest";
       safe_remove manifest_file;
     end;
@@ -1327,7 +1326,7 @@ let compile_if_needed file =
           failwith "Compilation of C code is not supported for this toolchain"
     in
     if !verbose >= 1 || !dry_mode then Printf.printf "+ %s\n%!" cmd;
-    let exit = if !dry_mode then 0 else Sys.command cmd in
+    let exit = if !dry_mode then 0 else cmd_verbose cmd in
     if pipe <> "" then display_msvc_output stdout file;
     if exit <> 0 then failwith "Error while compiling";
     tmp_obj
@@ -1388,9 +1387,9 @@ let main () =
       | (`GNAT|`GNAT64|`MINGW|`MINGW64|`CYGWIN|`CYGWIN64), `None ->
           begin match Sys.os_type with
           | "Unix" | "Cygwin" ->
-              Sys.command "cygpath -S 2>/dev/null >/dev/null" = 0
+              cmd_verbose "cygpath -S 2>/dev/null >/dev/null" = 0
           | "Win32" ->
-              Sys.command "cygpath -S 2>NUL >NUL" = 0
+              cmd_verbose "cygpath -S 2>NUL >NUL" = 0
           | _ -> assert false
           end
       | (`MSVC|`MSVC64|`LIGHTLD), `None -> false
